@@ -1,0 +1,30 @@
+name: Build LaTeX Document
+
+# This tells GitHub to run the compiler every time you push to the 'main' or 'master' branch
+on:
+  push:
+    branches:
+      - main
+      - master
+
+jobs:
+  build_latex:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v4
+
+      - name: Compile LaTeX document
+        uses: xu-cheng/latex-action@v3
+        with:
+          # Make sure this matches the name of your main tex file!
+          root_file: main.tex 
+          
+          # Optional: If your template requires specific LaTeX engines like XeLaTeX or LuaLaTeX, uncomment the line below:
+          # compiler: xelatex 
+
+      - name: Upload PDF as Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Final-Report-PDF
+          path: main.pdf

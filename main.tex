@@ -1,0 +1,164 @@
+% =======================================
+% TYPE DE DOCUMENT
+% =======================================
+\documentclass[12pt,a4paper]{report}
+\renewcommand{\thechapter}{\Roman{chapter}}
+
+% =======================================
+% PRÉAMBULE
+% =======================================
+
+% --- Encodage et langue ---
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[french]{babel}
+\usepackage{newtxtext}
+\usepackage{newtxmath}
+% --- Marges ---
+\usepackage[top=2cm, bottom=2cm, left=2.5cm, right=2cm]{geometry}
+
+% --- Packages essentiels ---
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{array}
+\usepackage{setspace}
+\usepackage{longtable}
+\usepackage{multirow}
+\usepackage{enumitem}
+\usepackage{multicol}
+\usepackage{xcolor}
+\usepackage{pdfpages}
+\usepackage{tabularx}
+\usepackage{minibox}
+\usepackage{lipsum}
+\usepackage{booktabs}
+\setcounter{secnumdepth}{4}
+\setcounter{tocdepth}{4}
+
+% --- Hyperref (toujours presque en dernier) ---
+\usepackage[colorlinks=false]{hyperref}
+
+% =======================================
+% TABLEAUX
+% =======================================
+\setlength{\extrarowheight}{2pt}
+
+% =======================================
+% INTERLIGNE
+% =======================================
+\onehalfspacing
+
+% =======================================
+% STYLE DES TITRES
+% =======================================
+\usepackage{titlesec}
+
+\titleformat{\chapter}[display]
+{\normalfont\bfseries\centering\fontsize{12pt}{14pt}\selectfont}
+{\thechapter}
+{1em}
+{}
+
+\titleformat{\section}
+{\bfseries\normalsize}
+{\thesection}{1em}{}
+
+\titleformat{\subsection}
+{\bfseries\normalsize}
+{\thesubsection}{1em}{}
+
+\titlespacing*{\chapter}{0pt}{6pt}{6pt}
+\titlespacing*{\section}{0pt}{6pt}{6pt}
+\titlespacing*{\subsection}{0pt}{6pt}{6pt}
+
+% =======================================
+% STYLE CHAPITRE
+% =======================================
+\usepackage[Lenny]{fncychap}
+
+% =======================================
+% EN-TÊTES ET PIEDS DE PAGE
+% =======================================
+\usepackage{fancyhdr}
+\setlength{\headheight}{15pt}
+\pagestyle{fancy}
+
+\makeatletter
+\let\ps@plain\ps@fancy
+\makeatother
+
+\fancyhf{}
+\fancyhead[R]{\itshape\nouppercase{\leftmark}}
+\fancyfoot[R]{\thepage}
+\renewcommand{\headrulewidth}{1.5pt}
+
+% =======================================
+% LISTINGS (CODE)
+% =======================================
+\usepackage{listings}
+
+\definecolor{lightgray}{rgb}{0.95,0.95,0.95}
+
+\lstset{
+	basicstyle=\ttfamily,
+	backgroundcolor=\color{lightgray},
+	frame=single,
+	framesep=3pt
+}
+
+% =======================================
+% ARABE (compatible pdfLaTeX)
+% =======================================
+\usepackage{arabtex}
+\usepackage{utf8}
+
+\newcommand{\ar}[1]{\begin{arabtext}#1\end{arabtext}}
+
+% =======================================
+% GLOSSAIRES
+% =======================================
+\usepackage[acronym]{glossaries}
+\makeglossaries
+
+% =======================================
+% DÉBUT DU DOCUMENT
+% =======================================
+\begin{document}
+	
+	\input{divers/pagedegarde}
+	
+	% ================== Préliminaires ==================
+	\pagenumbering{roman}
+	\input{divers/acronymes}
+	\addcontentsline{toc}{chapter}{Table des matières}
+	\tableofcontents
+	
+	\clearpage
+	\addcontentsline{toc}{chapter}{Liste des figures}
+	\listoffigures
+	
+	\clearpage
+	\addcontentsline{toc}{chapter}{Liste des tableaux}
+	\listoftables
+	
+	% ================== Corps du document ==================
+	\clearpage
+	\pagenumbering{arabic}
+	
+	\input{divers/introduction}
+	\input{chapitres/chapitre1}
+	\input{chapitres/chapitre2}
+	\input{chapitres/chapitre3}
+	\input{chapitres/chapitre4}
+	\input{divers/conclusion}
+	\input{divers/references}
+	\input{divers/annexes}
+	
+	% ================== Abstract ==================
+	\cleardoublepage
+	\pagestyle{empty}
+	\input{divers/abstract}
+	\cleardoublepage
+	\pagestyle{plain}
+	
+\end{document}

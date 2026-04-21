@@ -1,0 +1,115 @@
+% ============================================================
+%  GENERAL INTRODUCTION
+%  File    : divers/introduction.tex
+%  Author  : Zenfour Abdelmouaiz  —  ENSTICP 5th Year
+%  Thesis  : Zero-Touch Deployment and Cloud-Native
+%             Orchestration of Edge Nodes for IoT
+%  Partner : AET Industries
+%  Rules   : ENSTICP — impersonal tone, deductive paragraphs,
+%            no floats, ≤ 2 pages, IEEE citations [n],
+%            1 cm first-line indent, justified alignment
+% ============================================================
+
+\chapter*{General Introduction}
+\addcontentsline{toc}{chapter}{General Introduction}
+\markboth{General Introduction}{General Introduction}
+
+% ------------------------------------------------------------------
+%  PARAGRAPH 1 — General context: the IoT scaling challenge
+% ------------------------------------------------------------------
+    The global proliferation of Internet of Things (\textit{IoT}) devices is
+reshaping the operational requirements of embedded systems across industrial
+sectors. Manufacturing plants, energy installations, and Oil \& Gas facilities
+now deploy large fleets of heterogeneous, geographically distributed hardware
+nodes, each requiring continuous software management, configuration updates,
+and workload lifecycle operations throughout its service lifetime. As fleet
+sizes scale from tens to thousands of units, the classical maintenance model —
+in which a field technician physically visits each deployment site to perform
+firmware updates or reconfigurations — becomes prohibitively costly and
+impossible to sustain at scale. This dependency on physical human intervention,
+widely referred to in the industry as the \textit{truck roll} problem,
+constitutes a fundamental barrier to the scalable operation of modern
+IoT infrastructure.
+
+% ------------------------------------------------------------------
+%  PARAGRAPH 2 — Specific context and partner: AETI's challenge
+% ------------------------------------------------------------------
+    \textit{AET Industries} (\textit{AETI}), an Algerian company specialising
+in the full lifecycle of embedded hardware innovation — from concept and firmware
+development through to prototyping and production — exemplifies this challenge.
+While AETI delivers high-performance embedded solutions to industrial clients,
+the lifecycle management of deployed hardware nodes once they leave the
+laboratory remains a manually intensive process. Remote deployment of new
+workloads, configuration updates, and firmware changes to field-installed boards
+requires on-site intervention that is difficult to scale and represents a
+significant operational cost. The need for a cloud-native orchestration layer
+capable of managing deployed embedded nodes autonomously and remotely defines
+the industrial motivation of this work.
+
+% ------------------------------------------------------------------
+%  PARAGRAPH 3 — Problematic: three unresolved technical gaps
+% ------------------------------------------------------------------
+    Addressing this need through existing technologies reveals three
+simultaneously unresolved technical challenges. First, although cloud-native
+container orchestration frameworks such as \textit{Kubernetes} offer powerful
+declarative management capabilities, their standard distributions impose a
+control-plane overhead that is incompatible with resource-constrained IoT edge
+hardware~\cite{bohm2022, ogbuachi2020}. Second, field-deployed nodes typically
+operate behind Network Address Translation (\textit{NAT}) barriers and dynamic
+IP assignments, preventing a centralised control plane from establishing reliable
+communication with them without a dedicated secure tunnelling solution. Third,
+the initial onboarding of an edge node into a managed cluster requires credential
+distribution and network configuration steps that, in the current state of the
+art, depend on physical proximity or manual operator intervention~\cite{boskov2020}.
+No published architecture resolves all three constraints within a single,
+integrated system.
+
+% ------------------------------------------------------------------
+%  PARAGRAPH 4 — Objectives and proposed approach
+% ------------------------------------------------------------------
+    This thesis proposes, implements, and experimentally validates an integrated
+architecture for Zero-Touch Deployment (\textit{ZTD}) and cloud-native
+orchestration of IoT edge nodes, designed to resolve these three challenges
+simultaneously. The proposed system combines a lightweight \textit{K3s} cluster
+hosted on \textit{AWS EC2} as the cloud control plane, an \textit{ArgoCD}
+GitOps engine enforcing declarative, repository-driven deployments, and a
+\textit{WireGuard}-based encrypted overlay network governed by a novel
+Tri-State Fallback algorithm that ensures robust NAT traversal across all
+reachable network topologies~\cite{donenfeld2017, wireguard2024}. A custom
+Python Zero-Touch Provisioning daemon, integrated with \textit{AWS Lambda}
+and \textit{SSM Vault} as a cloud Rendezvous \textit{API}, enables a newly
+powered edge node to autonomously discover the control plane, receive its
+identity credentials, establish the secure tunnel, and register into the
+cluster — all without any physical human intervention. The practical utility
+of this infrastructure is demonstrated through the deployment of an IoT
+application that collects environmental telemetry from downstream
+\textit{ESP32} microcontrollers via the \textit{CoAP} protocol and
+orchestrates Over-The-Air (\textit{OTA}) firmware updates to those devices,
+with end-to-end observability provided through \textit{InfluxDB~v2} and
+\textit{Grafana}.
+
+% ------------------------------------------------------------------
+%  PARAGRAPH 5 — Validation methodology
+% ------------------------------------------------------------------
+    The system is validated through a deliberate two-phase hardware strategy.
+In the first phase, the complete provisioning and orchestration pipeline is
+built and verified in a virtualised environment, enabling rapid iteration and
+architectural refinement without hardware constraints. In the second phase, the
+validated architecture is migrated to a physical \textit{Raspberry Pi}
+operating as a bare-metal edge gateway, confirming portability across hardware
+substrates and readiness for real-world industrial deployment.
+
+% ------------------------------------------------------------------
+%  PARAGRAPH 6 — Thesis plan (one sentence per chapter — ENSTICP norm)
+% ------------------------------------------------------------------
+    This document is organised into four chapters. \textbf{Chapter~I} surveys
+the state of the art in cloud-edge orchestration, Zero-Touch Provisioning,
+and secure tunnelling, and establishes the technological foundation and
+comparative justification for the selected stack. \textbf{Chapter~II} presents
+the global architecture and detailed design of the proposed system, including
+the Tri-State Fallback algorithm and the ZTP provisioning sequence.
+\textbf{Chapter~III} describes the full implementation of the system, from
+cloud infrastructure provisioning and GitOps pipeline configuration to the
+edge node runtime and IoT application deployment. \textbf{Chapter~IV} presents
+the experimental results, validates the system against its functional
+requirements, and discusses the contributions and perspectives of this work.
